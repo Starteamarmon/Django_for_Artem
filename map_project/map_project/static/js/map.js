@@ -33,22 +33,22 @@ function showPlaceInfo(place) {
     }
     
     // Находим и выделяем метку
-    if (markers[place.id]) {
-        markers[place.id].setIcon(activeIcon);
-        activeMarker = markers[place.id];
+    if (markers[place.title]) {
+        markers[place.title].setIcon(activeIcon);
+        activeMarker = markers[place.title];
     }
-    
+
     document.getElementById('place-title').textContent = place.title;
-    document.getElementById('place-desc').innerHTML = place.description;
-    
+    document.getElementById('place-desc').innerHTML = place.description_long;
+
     var img = document.getElementById('place-img');
-    if (place.images && place.images.length > 0) {
-        img.src = place.images[0];
+    if (place.imgs && place.imgs.length > 0) {
+        img.src = place.imgs[0];
         img.style.display = 'block';
     } else {
         img.style.display = 'none';
     }
-    
+
     document.getElementById('sidebar').style.display = 'block';
 }
 
@@ -63,16 +63,21 @@ function hideSidebar() {
 // КНОПКА ЗАКРЫТИЯ
 document.getElementById('close-btn').onclick = hideSidebar;
 
-// СОЗДАЕМ МЕТКИ ИЗ БД
-if (typeof placesData !== 'undefined') {
-    placesData.forEach(function(place) {
-        var marker = L.marker(place.coords, {icon: defaultIcon})
-            .addTo(map)
-            .on('click', function() {
-                showPlaceInfo(place);
-            });
-        markers[place.id] = marker;
-    });
-} else {
-    console.error('placesData is not defined!');
+// ЗАГРУЗКА ДАННЫХ ИЗ API
+function loadPlacesFromAPI() {
+    // Пока загружаем места по одному (потом сделаем список всех мест)
+    fetch('/places/1/')
+        .then(response => response.json())
+        .then(place => {
+            var marker = L.marker([place.coordinates.lat, place.coordinates.lng], {icon: defaultIcon})
+                .addTo(map)
+                .on('click', function() {
+                    showPlaceInfo(place);
+                });
+            markers[place.title] = marker;
+        })
+        .catch(error => console.error('Error loading place:', error));
 }
+
+// ЗАГРУЗКА ПРИ СТАРТЕ
+loadPlacesFromAPI();
