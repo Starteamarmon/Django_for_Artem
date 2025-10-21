@@ -27,19 +27,17 @@ var activeMarker = null;
 
 // ФУНКЦИИ
 function showPlaceInfo(place) {
-    // Сбрасываем предыдущую активную метку
     if (activeMarker) {
         activeMarker.setIcon(defaultIcon);
     }
-    
-    // Находим и выделяем метку
+
     if (markers[place.title]) {
         markers[place.title].setIcon(activeIcon);
         activeMarker = markers[place.title];
     }
 
     document.getElementById('place-title').textContent = place.title;
-    document.getElementById('place-desc').innerHTML = place.description_long;
+    document.getElementById('place-desc').innerHTML = place.description;
 
     var img = document.getElementById('place-img');
     if (place.imgs && place.imgs.length > 0) {
@@ -60,24 +58,35 @@ function hideSidebar() {
     }
 }
 
-// КНОПКА ЗАКРЫТИЯ
 document.getElementById('close-btn').onclick = hideSidebar;
 
 // ЗАГРУЗКА ДАННЫХ ИЗ API
 function loadPlacesFromAPI() {
-    // Пока загружаем места по одному (потом сделаем список всех мест)
-    fetch('/places/1/')
-        .then(response => response.json())
-        .then(place => {
-            var marker = L.marker([place.coordinates.lat, place.coordinates.lng], {icon: defaultIcon})
-                .addTo(map)
-                .on('click', function() {
-                    showPlaceInfo(place);
-                });
-            markers[place.title] = marker;
+    console.log('Loading places from API...');
+
+    fetch('/places/')
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
         })
-        .catch(error => console.error('Error loading place:', error));
+        .then(places => {
+            console.log('Places loaded:', places);
+            console.log('Number of places:', places.length);
+
+            places.forEach(place => {
+                console.log('Creating marker for:', place.title);
+                var marker = L.marker([place.coordinates.lat, place.coordinates.lng], {icon: defaultIcon})
+                    .addTo(map)
+                    .on('click', function() {
+                        showPlaceInfo(place);
+                    });
+                markers[place.title] = marker;
+            });
+        })
+        .catch(error => console.error('Error loading places:', error));
 }
 
-// ЗАГРУЗКА ПРИ СТАРТЕ
-loadPlacesFromAPI();
+// ЗАПУСК ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+document.addEventListener('DOMContentLoaded', function() {
+    loadPlacesFromAPI();
+});

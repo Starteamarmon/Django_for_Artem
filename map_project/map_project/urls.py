@@ -19,12 +19,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from places.views import home, place_detail
+from places.views import home, place_detail, places_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('places/<int:place_id>/', place_detail, name='place_detail')
+    path('places/<int:place_id>/', place_detail, name='place_detail'),
+    path('places/', places_list, name='places_list'),
 ]
 
 if settings.DEBUG:

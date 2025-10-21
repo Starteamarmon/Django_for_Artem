@@ -1,11 +1,10 @@
 from django.db import models
-
-from django.db import models
+from ckeditor.fields import RichTextField
 
 
 class Place(models.Model):
     title = models.CharField(max_length=200)
-    description_long = models.TextField(blank=True)
+    description = RichTextField(blank=True)
     lng = models.FloatField()
     lat = models.FloatField()
 
