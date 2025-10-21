@@ -27,6 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ДЛЯ ПРОВЕРКИ
+print("=== MEDIA SETTINGS ===")
+print("BASE_DIR:", BASE_DIR)  # Должен указывать на map_project/
+print("MEDIA_ROOT:", MEDIA_ROOT)
+print("Реальный путь:", os.path.abspath(MEDIA_ROOT))
 
 # Application definition
 
@@ -38,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'map_project',
+    'places',
 ]
 
 MIDDLEWARE = [

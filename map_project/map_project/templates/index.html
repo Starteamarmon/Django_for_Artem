@@ -15,6 +15,24 @@
         <p id="place-desc"></p>
     </div>
 
+    <script>
+        const placesData = [
+            {% for place in places %}
+            {
+                id: {{ place.id }},
+                title: "{{ place.title|escapejs }}",
+                coords: [{{ place.lat }}, {{ place.lng }}],
+                description: `{{ place.description_long|escapejs }}`,
+                images: [
+                    {% for image in place.images.all %}
+                    "{{ image.image.url }}",
+                    {% endfor %}
+                ]
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+    </script>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="{% static 'js/map.js' %}"></script>
 </body>
