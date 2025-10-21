@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Карта интересных мест</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Здесь будет карта</h1>
+    <div id="map"></div>
+    <div id="sidebar">
+        <button id="close-btn">×</button>
+        <img id="place-img" src="" alt="">
+        <h2 id="place-title"></h2>
+        <p id="place-desc"></p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="{% static 'js/map.js' %}"></script>
 </body>
 </html>
