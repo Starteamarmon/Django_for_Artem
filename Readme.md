@@ -5,8 +5,8 @@ Django-приложение для интерактивной карты дос�
 ## Установка и запуск
 
 Клонируйте репозиторий:
-`git clone https://github.com/yourusername/moscow-map.git`  
-`cd moscow-map`
+`git clone https://github.com/Starteamarmon/Django_for_Artem`  
+`cd map_project`
 
 Создайте виртуальное окружение и установите зависимости:
 `python -m venv venv`  
